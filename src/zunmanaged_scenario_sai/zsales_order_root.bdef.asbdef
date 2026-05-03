@@ -1,0 +1,75 @@
+unmanaged implementation in class zbp_sales_order_root unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZSALES_ORDER_ROOT
+draft table zsales_ordr_drft
+lock master
+total etag lastchangedat
+authorization master ( global, instance )
+etag master lastchangedat
+{
+
+ create ( precheck );
+  update ( precheck );
+  delete ( precheck, features : instance );
+
+
+
+determination setDefaultStatus on modify { create; }
+
+  association _customer { create ( precheck ); with draft; }
+  association _delivery { create ( precheck ); with draft; }
+  association _testdrive { create ( precheck ); with draft; }
+
+   action Cancel;
+
+draft action Discard with additional implementation;
+  draft action Activate with additional implementation optimized;
+  draft action Resume with additional implementation;
+  draft action Edit with additional implementation;
+  draft determine action Prepare
+  {
+    validation ( always ) orderdate;
+  }
+ validation orderdate on save { create; update; }
+}
+define behavior for ZCUSTOMER_CHILD
+draft table zcstmr_chld_drft
+lock dependent by _sales
+authorization dependent by _sales
+etag dependent by _sales
+{
+ create;
+  update;
+  delete;
+  field ( readonly ) Transctionid, salesorder;
+  association _sales;
+  determination EMAILID on modify { create; }
+}
+
+define behavior for ZDELIVERY_child
+draft table zdlry_child_drft
+lock dependent by _sales
+authorization dependent by _sales
+etag dependent by _sales
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) Transctionid, salesorder;
+  association _sales;
+}
+
+define behavior for ZTEST_DRIVE_child
+draft table ztest_drive_drft
+lock dependent by _sales
+authorization dependent by _sales
+etag dependent by _sales
+{
+ create;
+  update;
+  delete;
+  field ( readonly ) Transctionid, salesorder;
+  association _sales;
+}

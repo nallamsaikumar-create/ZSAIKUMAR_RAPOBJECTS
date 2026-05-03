@@ -1,0 +1,8 @@
+@EndUserText.label: 'Web API for Patient Details'
+define service ZPTNT_DTLS_WEB_API
+  provider contracts odata_v4_webapi, odata_v2_webapi {
+  expose ZPTNT_DTLS_PROJ         as Patients;
+  expose ZPTNT_APNMT_PROJ_CHILD  as appointment;
+  expose ZPTNT_MEDREC_PROJ_CHILD as MEDRECORDS;
+  expose ZPTNT_PRESC_PROJ_CHILD  as prescription;
+}

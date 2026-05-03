@@ -1,0 +1,7 @@
+@EndUserText.label: 'Service Definition for Car showroom'
+define service ZSALES_ORDER_SerDef {
+  expose ZSALES_ORDER_PROJ      as salesorder;
+  expose ZCUSTOMER_PROJ_CHILD   as Customer;
+  expose ZDELIVERY_PROJ_CHILD   as Delivery;
+  expose ZTEST_DRIVE_PROJ_CHILD as Testdrive;
+}

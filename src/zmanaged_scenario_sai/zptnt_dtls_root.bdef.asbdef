@@ -1,0 +1,174 @@
+managed with additional save and cleanup with full data
+implementation in class zbp_ptnt_dtls_root unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZPTNT_DTLS_ROOT
+persistent table zptnt_dtls_tab
+draft table zptnt_dtls_draft query ZPTNT_DTLS_DRAFT_Q
+lock master
+total etag Lastchangedate
+authorization master ( global, instance )
+etag master Lastchangedate
+late numbering
+{
+
+  create ( precheck );
+  update ( precheck );
+
+  field ( readonly ) PatientId;
+  field ( features : instance ) Status;
+
+  delete ( precheck, features : instance );
+
+  association _APPOINTMENT { create; with draft; }
+  association _MEDREC      { create; with draft; }
+  association _PRESC       { create; with draft; }
+association _CLAIM { create; with draft; }
+  action DischargePatient;
+  action CompleteDischarge deep parameter ZABS_I_PTNT_DISCH_ROOT;
+
+  event PatientDischarged;
+
+  validation checkstatus on save { create; field Status; }
+
+  determination setDefaultStatus on modify { create; }
+
+  draft action Resume with additional implementation;
+  draft action Edit with additional implementation;
+  draft action Activate with additional implementation optimized;
+  draft action Discard with additional implementation;
+
+draft determine action Prepare
+{
+  validation checkstatus;
+}
+
+  determination Appointment on save { create; update; delete; }
+
+ mapping for zptnt_dtls_tab corresponding
+{
+  PatientId         = patient_id;
+  Name              = name;
+  Age               = age;
+  Gender            = gender;
+  Phone             = phone;
+  Status            = status;
+  InsuranceNo       = insurance_no;
+InsuranceApprovalStatus = insurance_approval_status;
+InsuranceApprovalNo     = insurance_approval_no;
+  BloodGroup        = blood_group;
+  EmergencyContact  = emergency_contact;
+  PatientCategory   = patient_category;
+  Lastchangedate    = lastchangedat;
+}
+}
+
+define behavior for ZPTNT_APNMT_CHILD
+persistent table zptnt_apnmt_tab
+draft table zptnt_apnmt_drft query ZPTNT_APNMT_DRFT_Q
+lock dependent by _details
+authorization dependent by _details
+etag dependent by _details
+late numbering
+{
+  update;
+  delete;
+
+  field ( readonly ) PatientId, AppointmentId;
+
+  association _details;
+
+  determination Appointment22 on save { create; update; delete; }
+  determination setDefaultApptStatus on modify { create; }
+
+  mapping for zptnt_apnmt_tab corresponding
+  {
+    PatientId      = patient_id;
+    AppointmentId = appointment_id;
+    Doctorid      = doctorid;
+    Apptdate      = apptdate;
+    Appttime      = appttime;
+    Status        = status;
+  }
+}
+
+define behavior for ZPTNT_MEDREC_CHILD
+persistent table zptnt_medrec_tab
+draft table zptnt_mdrec_drft query zptnt_mdrec_drft_q
+lock dependent by _details
+authorization dependent by _details
+etag dependent by _details
+late numbering
+{
+  update;
+  delete;
+
+  field ( readonly ) PatientId, Recordid, AppointmentId;
+
+  association _details;
+
+  mapping for zptnt_medrec_tab corresponding
+  {
+    PatientId     = patient_id;
+    AppointmentId = appointment_id;
+    Recordid      = recordid;
+    Diagnosis     = diagnosis;
+    Notes         = notes;
+    Vitals        = vitals;
+  }
+}
+
+define behavior for ZPTNT_PRESC_CHILD
+persistent table zptnt_presc_tab
+draft table zptnt_presc_drft query ZPTNT_PRESC_DRFT_Q
+lock dependent by _details
+authorization dependent by _details
+etag dependent by _details
+late numbering
+{
+  update;
+  delete;
+
+  field ( readonly ) PatientId, AppointmentId, Recordid, PrescriptionId;
+
+  association _details;
+
+  mapping for zptnt_presc_tab corresponding
+  {
+    PatientId      = patient_id;
+    AppointmentId  = appointment_id;
+    Recordid       = recordid;
+    PrescriptionId = prescription_id;
+    Medicine       = medicine;
+    Dosage         = dosage;
+    Duration       = duration;
+  }
+}
+
+define behavior for ZPTNT_CLAIM_CHILD
+persistent table zptnt_claim_tab
+draft table zptnt_claim_drft
+lock dependent by _details
+authorization dependent by _details
+etag dependent by _details
+late numbering
+{
+  update;
+  delete;
+
+  field ( readonly ) PatientId, ClaimId;
+
+  association _details;
+
+  mapping for zptnt_claim_tab corresponding
+  {
+    PatientId       = patient_id;
+    ClaimId         = claim_id;
+    InsuranceNo     = insurance_no;
+    ClaimAmount     = claim_amount;
+    ApprovedAmount  = approved_amount;
+    ClaimStatus     = claim_status;
+    RejectedReason  = rejected_reason;
+  }
+}

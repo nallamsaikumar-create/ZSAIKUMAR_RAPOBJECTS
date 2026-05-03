@@ -1,0 +1,46 @@
+interface;
+use draft;
+
+define behavior for ZPTNT_DTLS_INTR alias ZPTNT_DTLS_ROOT
+{
+  use create;
+  use update;
+  use delete;
+
+  use action DischargePatient;
+  use action CompleteDischarge;
+
+  use action Resume;
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+
+  use association _APPOINTMENT { create; with draft; }
+  use association _MEDREC { create; with draft; }
+  use association _PRESC { create; with draft; }
+}
+
+define behavior for ZPTNT_APNMT_INTR_CHILD alias ZPTNT_APNMT_CHILD
+{
+  use update;
+  use delete;
+
+  use association _details;
+}
+
+define behavior for ZPTNT_MEDREC_INTR_CHILD alias ZPTNT_MEDREC_CHILD
+{
+  use update;
+  use delete;
+
+  use association _details;
+}
+
+define behavior for ZPTNT_PRESC_intr_CHILD alias ZPTNT_PRESC_CHILD
+{
+  use update;
+  use delete;
+
+  use association _details;
+}

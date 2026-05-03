@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Definition for Travel Details table'
+define service ZTRAVEL_DETAILS_SERDEF {
+  expose ZTRAVEL_DETAILS_ROOT;
+}

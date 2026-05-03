@@ -1,0 +1,4 @@
+@EndUserText.label: 'tst'
+define service Ztest_serviceee {
+  expose ZAUTO_SRVC_HDR_ROOT;
+}

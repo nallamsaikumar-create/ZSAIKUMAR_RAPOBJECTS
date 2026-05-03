@@ -1,0 +1,9 @@
+abstract;
+strict ( 2 );
+with hierarchy;
+
+
+define behavior for ZABS_I_PTNT_DISCH_ROOT
+{
+
+}

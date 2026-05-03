@@ -1,0 +1,46 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZSALES_ORDER_PROJ //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _customer { create; with draft; }
+  use association _delivery { create; with draft; }
+  use association _testdrive { create; with draft; }
+
+ use action Discard;
+  use action Activate;
+  use action Resume;
+  use action Edit;
+  use action Prepare;
+
+  use action Cancel;
+}
+
+define behavior for ZCUSTOMER_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _sales { with draft; }
+}
+
+define behavior for ZDELIVERY_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _sales { with draft; }
+}
+
+define behavior for ZTEST_DRIVE_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _sales { with draft; }
+}

@@ -1,0 +1,4 @@
+@EndUserText.label: 'Test'
+define service Zemploy_details_Service_def {
+  expose ZEMPLY_DETAILS_ROOT;
+}

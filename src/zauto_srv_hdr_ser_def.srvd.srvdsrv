@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Definition for Auto service'
+define service ZAUTO_SRV_HDR_SER_DEF {
+  expose ZAUTO_SRV_HDR_PROJ;
+  expose ZAUTO_Srv_ITM_proj;
+}

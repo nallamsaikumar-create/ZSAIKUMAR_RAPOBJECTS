@@ -1,0 +1,59 @@
+projection implementation in class zbp_ptnt_dtls_PROJ unique;
+strict ( 2 );
+with managed instance filter;
+use draft;
+
+define behavior for ZPTNT_DTLS_PROJ //alias <alias_name>
+use etag
+{
+
+ use create ( augment, precheck ); // augment and precheck must be implemented ABP for projection
+  use update ( augment );
+  use delete;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+  use action Resume;
+
+
+  use association _APPOINTMENT  { create;  with draft; }
+  use association _MEDREC { create; with draft; }
+ use association _PRESC { create; with draft; }
+ use association _CLAIM { create; with draft; }
+ use action DischargePatient ;
+use action CompleteDischarge;
+}
+
+define behavior for ZPTNT_APNMT_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _details { with draft; }
+}
+
+define behavior for ZPTNT_MEDREC_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _details { with draft; }
+}
+
+define behavior for ZPTNT_PRESC_PROJ_CHILD //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _details { with draft; }
+}
+
+define behavior for ZPTNT_CLAIM_PROJ_CHILD
+{
+  use update;
+  use delete;
+
+  use association _details { with draft; }
+}

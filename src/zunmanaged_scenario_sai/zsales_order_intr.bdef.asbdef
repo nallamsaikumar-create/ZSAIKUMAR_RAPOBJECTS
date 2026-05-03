@@ -1,0 +1,48 @@
+interface;
+use draft;
+
+define behavior for ZSALES_ORDER_INTR alias ZSALES_ORDER_ROOT
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Cancel;
+
+  use action Discard;
+  use action Activate;
+  use action Resume;
+  use action Edit;
+  use action Prepare;
+
+  use association _customer { create; with draft; }
+  use association _delivery { create; with draft; }
+  use association _testdrive { create; with draft; }
+}
+
+define behavior for ZCUSTOMER_INTR alias ZCUSTOMER_CHILD
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _sales;
+}
+
+define behavior for ZDELIVERY_intr alias ZDELIVERY_CHILD
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _sales;
+}
+
+define behavior for ZTEST_DRIVE_intr alias ZTEST_DRIVE_CHILD
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _sales;
+}

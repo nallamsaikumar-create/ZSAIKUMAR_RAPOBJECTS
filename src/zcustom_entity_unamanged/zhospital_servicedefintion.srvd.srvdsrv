@@ -1,0 +1,7 @@
+@EndUserText.label: 'Service Defintion'
+define service ZHOSPITAL_SERVICEdEFINTION {
+  expose ZPTNT_DTLS_R_CUSTOM   as details;
+  expose ZPTNT_APNMT_C_CUSTOM  as appointment;
+  expose ZPTNT_medrec_C_CUSTOM as medicalrecord;
+  expose ZPTNT_presc_C_CUSTOM  as prescription;
+}
